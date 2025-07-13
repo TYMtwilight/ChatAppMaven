@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ユーザー操作用のMyBatisマッパーXML -->
+<mapper namespace="com.example.chat_app_maven.mapper.UserMapper">
+    
+    <!-- 全ユーザーを取得 -->
+    <select id="getAllUsers" resultType="User">
+        SELECT id, username, mail, created_at, updated_at 
+        FROM users 
+        ORDER BY created_at ASC
+    </select>
+    
+    <!-- 指定されたIDのユーザーを取得 -->
+    <select id="getUserById" resultType="User" parameterType="Long">
+        SELECT id, username, mail, created_at, updated_at 
+        FROM users 
+        WHERE id = #{id}
+    </select>
+    
+    <!-- 新しいユーザーを挿入 -->
+    <insert id="insertUser" parameterType="User">
+        INSERT INTO users (username, mail) 
+        VALUES (#{username}, #{mail})
+    </insert>
+    
+    <!-- 既存ユーザーの情報を更新 -->
+    <update id="updateUser" parameterType="User">
+        UPDATE users 
+        SET username = #{username}, 
+            mail = #{mail}, 
+            updated_at = CURRENT_TIMESTAMP 
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 指定されたIDのユーザーを削除 -->
+    <delete id="deleteUserById" parameterType="Long">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+    
+</mapper>

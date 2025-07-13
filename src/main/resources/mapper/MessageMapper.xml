@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- メッセージ操作用のMyBatisマッパーXML -->
+<mapper namespace="com.example.chat_app_maven.mapper.MessageMapper">
+
+    <!-- 全メッセージをユーザー名と一緒に時系列順で取得 -->
+    <select id="getAllMessagesWithUsername" resultType="MessageWithUsername">
+        SELECT m.id, m.user_id, m.message, u.username, m.created_at, m.updated_at 
+        FROM messages m
+        JOIN users u ON m.user_id = u.id
+        ORDER BY m.created_at ASC
+    </select>
+
+    <!-- 指定されたIDのメッセージをユーザー名と一緒に取得 -->
+    <select id="getMessageWithUsernameById" resultType="MessageWithUsername" parameterType="Long">
+        SELECT m.id, m.user_id, m.message, u.username, m.created_at, m.updated_at
+        FROM messages m
+        JOIN users u ON m.user_id = u.id
+        WHERE m.id = #{id}
+    </select>
+
+    <!-- 指定されたユーザーのメッセージをユーザー名と一緒に全て取得 -->
+    <select id="getMessagesWithUsernameByUsername" resultType="MessageWithUsername" parameterType="String">
+        SELECT m.id, m.user_id, m.message, u.username, m.created_at, m.updated_at
+        FROM messages m
+        JOIN users u ON m.user_id = u.id
+        WHERE u.username = #{username}
+        ORDER BY m.created_at ASC
+    </select>
+
+    <!-- 新しいメッセージを挿入 -->
+    <insert id="insertMessage" parameterType="Message">
+        INSERT INTO messages (user_id, message)
+        VALUES (#{userId}, #{message})
+    </insert>
+
+    <!-- 既存メッセージの情報を更新 -->
+    <update id="updateMessage" parameterType="Message">
+        UPDATE messages
+        SET message = #{message}, 
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
+
+    <!-- 指定されたIDのメッセージを削除 -->
+    <delete id="deleteMessageById" parameterType="Long">
+        DELETE FROM messages WHERE id = #{id}
+    </delete>
+    
+</mapper>
