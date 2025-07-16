@@ -42,8 +42,9 @@ public class UserController {
     }
 
     // ユーザー作成
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<User> createUser(@RequestBody User user) {
+        user.setId(null);
         userService.insertUser(user);
         return ResponseEntity.ok(user);
     }

@@ -50,7 +50,7 @@ public class MessageController {
     }
 
     // メッセージ作成
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Message> createMessage(@RequestBody Message message) {
         messageService.insertMessage(message);
         return ResponseEntity.ok(message);

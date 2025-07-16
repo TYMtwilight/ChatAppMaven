@@ -19,7 +19,7 @@
     </select>
     
     <!-- 新しいユーザーを挿入 -->
-    <insert id="insertUser" parameterType="User">
+    <insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO users (username, mail) 
         VALUES (#{username}, #{mail})
     </insert>
